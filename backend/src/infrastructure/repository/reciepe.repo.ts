@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { RecipeEntity } from "src/entities/reciepe.entity";
 import { CreateReciepeDto } from "src/features/receipe/create-reciepe/reciepe.create.dto";
-import { DataSource, Repository } from "typeorm";
+import { DataSource, Like, Repository } from "typeorm";
 
 @Injectable()
 export class RecipeRepository extends Repository<RecipeEntity> {
@@ -18,7 +18,18 @@ export class RecipeRepository extends Repository<RecipeEntity> {
         return await this.findOne({
             where: {
                 recipe_name: recipe_name,
-                is_active: true
+                is_active: true,
+                is_deleted: false
+            }
+        });
+    }
+
+    async searchReceiepe(recipe_name: string) {
+        return await this.findOne({
+            where: {
+                recipe_name: Like(`%${recipe_name}%`),
+                is_active: true,
+                is_deleted: false
             }
         });
     }

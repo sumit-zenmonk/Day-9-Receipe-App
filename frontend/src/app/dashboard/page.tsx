@@ -9,6 +9,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ReciepeListComp from '@/component/dashboard-comp/receipe-list/page';
 import FavoriteListComp from '@/component/dashboard-comp/favorite-list/page';
 
@@ -30,8 +31,8 @@ export default function PermanentDrawer() {
         <List>
           {
             [
-              { text: "Favorite-List", icon: <FavoriteIcon /> },
-              { text: "My-Reciepe", icon: <FavoriteIcon /> }
+              { text: "My-Reciepe", icon: <AddCircleOutlineIcon /> },
+              { text: "Favorite-List", icon: <FavoriteIcon /> }
             ].map((item) => (
               <ListItem key={item.text} disablePadding>
                 <ListItemButton

@@ -21,6 +21,7 @@ import { FetchUserReceipeModule } from './features/receipe/fetch-user-reciepe/re
 import { FetchUserFavReceipeModule } from './features/receipe/fav-receipe-list/fav-receipe-list.module';
 import { DeleteReceipeModule } from './features/receipe/delete-reciepe/reciepe.delete.module';
 import { FetchAllReceipeModule } from './features/receipe/fetch-all-reciepe/reciepe.fetch.all.module';
+import { SearchReceipeModule } from './features/receipe/search-reciepe/reciepe.search.module';
 
 @Module({
   imports: [
@@ -50,10 +51,12 @@ import { FetchAllReceipeModule } from './features/receipe/fetch-all-reciepe/reci
     FetchUserFavReceipeModule,
     DeleteReceipeModule,
     FetchAllReceipeModule,
+    SearchReceipeModule,
   ],
   controllers: [AppController],
   providers: [AppService, AuthService, BcryptService, UserRepository, RecipeRepository, RecipeStepRepository, RecipeImgRepository],
 })
+
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
@@ -62,6 +65,7 @@ export class AppModule implements NestModule {
         { path: 'login', method: RequestMethod.ALL },
         { path: 'register', method: RequestMethod.ALL },
         { path: 'all_reciepe', method: RequestMethod.ALL },
+        { path: 'search_reciepe/{*path}', method: RequestMethod.ALL },
       )
       .forRoutes('*');
   }
