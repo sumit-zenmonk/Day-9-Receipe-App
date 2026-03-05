@@ -63,7 +63,7 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
             if (!res.ok) {
                 enqueueSnackbar(res.statusText, { variant: "error" });
             } else {
-                enqueueSnackbar(`${previousState ? "added" : "removed"} favorite reciepe`, { variant: `${previousState ? "success" : "error"}` });
+                enqueueSnackbar(`${!previousState ? "added" : "removed"} favorite reciepe`, { variant: `${!previousState ? "success" : "error"}` });
             }
         } catch (error) {
             setIsFav(previousState);
