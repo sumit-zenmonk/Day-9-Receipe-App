@@ -26,12 +26,14 @@
 }
 
 .menuItem:hover {
-  background: #e8e8e8;
+  background: #0099ff;
+  color: white;
 }
 
 .active {
-  background: #d0d0d0;
+  background: #000000;
   font-weight: 600;
+  color: white;
 }
 
 .main {
@@ -45,9 +47,9 @@
 }
 
 .addButton {
-  width: 20%;
-  padding: 2% 4%;
-  background: #1976d2;
+  width: fit-content;
+  padding: 1%;
+  background: #000000;
   color: white;
   border: none;
   border-radius: 6px;
@@ -55,5 +57,5 @@
 }
 
 .addButton:hover {
-  background: #155a9c;
+  background: #076cca;
 }

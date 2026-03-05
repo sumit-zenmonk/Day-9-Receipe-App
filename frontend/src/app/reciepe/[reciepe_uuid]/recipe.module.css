@@ -128,10 +128,10 @@
 }
 
 .stepNumber {
-    background: #1976d2;
-    color: white;
-    width: 100%;
-    padding: 5%;
+    color: rgb(0, 102, 255);
+    width: min-content;
+    height: fit-content;
+    padding: 1%;
     display: flex;
     align-items: center;
     justify-content: center;
