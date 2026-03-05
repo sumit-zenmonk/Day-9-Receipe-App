@@ -6,6 +6,7 @@ import { Box, Button, Card, CardContent, Typography } from "@mui/material";
 import styles from "./RecipeCardList.module.css";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useAppSelector } from "@/redux-store/hooks";
 import { RootState } from "@/redux-store";
 import { useRouter } from "next/navigation";
@@ -42,6 +43,30 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
     const [isFav, setIsFav] = useState(
         recipe?.favoritedBy?.some((fav: any) => fav.user_uuid === loggedInUserUuid && fav.is_active === true)
     );
+
+    const handleDelete = async (recipeUuid: string) => {
+        try {
+            const res = await fetch(
+                `${process.env.NEXT_PUBLIC_BACKEND_URL}/reciepe/${recipeUuid}`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: access_token,
+                    },
+                    body: JSON.stringify({ recipe_uuid: recipeUuid }),
+                }
+            );
+
+            if (!res.ok) {
+                enqueueSnackbar(res.statusText, { variant: "error" });
+            } else {
+                enqueueSnackbar(`Deleted Success`, { variant: "success" });
+            }
+        } catch (error) {
+            console.error("Error while deletion:", error);
+        }
+    };
 
     const handleFav = async (recipeUuid: string) => {
         const previousState = isFav;
@@ -103,6 +128,9 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
             </CardContent>
 
             <Box className={styles.cardFooter}>
+                <Button onClick={() => { handleDelete(recipe.recipe_uuid) }}>
+                    <DeleteForeverIcon />
+                </Button>
                 <Button onClick={() => handleFav(recipe.recipe_uuid)} sx={{ minWidth: "auto" }}>
                     {isFav ? (
                         <FavoriteIcon sx={{ color: "red" }} />
