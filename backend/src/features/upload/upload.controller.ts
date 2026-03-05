@@ -6,7 +6,7 @@ import { FileUploadService } from "src/infrastructure/file-upload/upload.service
 export default class UploadController {
     constructor(private readonly fileUploadService: FileUploadService) { }
 
-    //image route hndler
+    //image route handler
     @Post('image')
     @UseInterceptors(
         FilesInterceptor('imageUrl', 1, {
@@ -40,7 +40,6 @@ export default class UploadController {
         }),
     )
     async uploadVideo(@UploadedFiles() files: Express.Multer.File[]) {
-        console.log(files)
         const storedFiles = this.fileUploadService.handleUpload(files, 'video', 2);
         const image_urls = storedFiles.files;
         return {

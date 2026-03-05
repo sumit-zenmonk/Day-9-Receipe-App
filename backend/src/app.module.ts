@@ -38,7 +38,7 @@ import { SearchReceipeModule } from './features/receipe/search-reciepe/reciepe.s
     JwtModule.register({
       global: true,
       secret: process.env.JWT_REGISTER_SECRET,
-      signOptions: { expiresIn: '60m' },
+      // signOptions: { expiresIn: '60m' }, not in testing
     }),
 
     //Modules

@@ -1,9 +1,12 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { mimeCategoryConfig } from './upload.config';
 import path from 'path';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class FileUploadService {
+    constructor(private configService: ConfigService) { }
+
     handleUpload(
         files: Express.Multer.File[],
         type: keyof typeof mimeCategoryConfig,
@@ -41,11 +44,12 @@ export class FileUploadService {
             }
         });
 
+        const selfUrl = this.configService.get<string>('SELF_URL');
         //sent success
         return {
             message: `${type} uploaded successfully`,
             files: files.map((f) => ({
-                path: path.resolve(f.path)
+                path: `${selfUrl}/uploads/${f.filename}`,
             })),
         };
     }

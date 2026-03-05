@@ -1,0 +1,28 @@
+.header {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1%;
+    box-shadow: 4px 4px 12px 20px rgba(0, 0, 0, 0.05);
+    background: linear-gradient(to right, #f5fcff, #7ad7f0, #f5fcff);
+}
+
+.header>.left-container {
+    width: 50%;
+    gap: 20px;
+}
+
+.header>.left-container>p {
+    color: rgb(0, 110, 255);
+    padding: 1%;
+    border-radius: 50px;
+}
+
+.header>.right-container {
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}

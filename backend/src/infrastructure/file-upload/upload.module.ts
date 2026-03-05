@@ -8,7 +8,7 @@ import { FileUploadService } from './upload.service';
 export const multerconfig = {
     storage: diskStorage({
         destination: (req, file, cb) => {
-            const uploadPath = path.join(process.cwd(), 'uploads', String(req.user.uuid));
+            const uploadPath = path.join(process.cwd(), 'uploads');
             // Create folfer if not exists
             if (!fs.existsSync(uploadPath)) {
                 fs.mkdirSync(uploadPath, { recursive: true });
