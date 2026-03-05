@@ -15,14 +15,21 @@
 }
 
 .header>.left-container>p {
-    color: rgb(0, 110, 255);
+    color: rgb(255, 255, 255);
+    font-size: 3rem;
     padding: 1%;
     border-radius: 50px;
+    background: linear-gradient(to right, #0084ff 20%, #ffffff 80%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
 }
 
 .header>.right-container {
     width: 50%;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: flex-end;
+    gap: 1%;
 }
