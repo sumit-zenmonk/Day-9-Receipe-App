@@ -22,10 +22,11 @@ export const currentUserSlice = createSlice({
             state.username = action.payload.username;
             state.email = action.payload.email;
             state.access_token = action.payload.access_token;
-        }
+        },
+        logout: (state) => state = initialState
     }
 })
 
-export const { currentUser } = currentUserSlice.actions
+export const { currentUser, logout } = currentUserSlice.actions
 
 export default currentUserSlice.reducer

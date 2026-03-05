@@ -6,11 +6,14 @@ import Cookies from "js-cookie";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { persister } from "@/redux-store";
+import { useAppDispatch } from "@/redux-store/hooks";
+import { logout } from "@/redux-store/slices/curr-user";
 
 export default function HeaderComp() {
     const router = useRouter();
     const pathname = usePathname();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         const token = Cookies.get("token");
@@ -22,6 +25,7 @@ export default function HeaderComp() {
             if (isLoggedIn) {
                 Cookies.remove("token");
                 await persister.purge();
+                dispatch(logout());
                 localStorage.removeItem("persist:root");
                 setIsLoggedIn(false);
                 router.replace('/dashboard');
