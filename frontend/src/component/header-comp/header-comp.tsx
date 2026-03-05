@@ -14,7 +14,7 @@ export default function HeaderComp() {
     useEffect(() => {
         const token = Cookies.get("token");
         setIsLoggedIn(!!token);
-    }, []);
+    });
 
     const handleAuthAction = () => {
         try {
