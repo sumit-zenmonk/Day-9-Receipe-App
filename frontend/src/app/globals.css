@@ -5,6 +5,9 @@
   scrollbar-width: none;
   scroll-behavior: smooth;
   transition: all ease .5s;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
 body {

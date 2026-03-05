@@ -17,7 +17,7 @@ import { LoginInterface, LoginSchema } from "@/types/login";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/redux-store/hooks";
-import { currentUser } from "@/redux-store/slices/curr-user";
+import { currentUserAction } from "@/redux-store/slices/curr-user";
 
 export default function LoginForm() {
     const router = useRouter();
@@ -47,7 +47,7 @@ export default function LoginForm() {
 
         if (response && response.access_token) {
             enqueueSnackbar('Logged In Success', { variant: 'success' });
-            dispatch(currentUser(response));
+            dispatch(currentUserAction(response));
             Cookies.set("token", response.access_token);
             router.replace('/');
         } else {

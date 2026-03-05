@@ -6,6 +6,7 @@ import { Box, Typography, Divider, CircularProgress } from '@mui/material';
 import { enqueueSnackbar } from "notistack";
 import { ApiCallService } from "@/services/http";
 import styles from './recipe.module.css';
+import Image from 'next/image';
 
 export default function RecipeClientPage() {
     const params = useParams();
@@ -44,31 +45,32 @@ export default function RecipeClientPage() {
 
     return (
         <Box className={styles.scrollContainer}>
-            <Box className={styles.contentWrapper}>
-                <Box component="header">
-                    <Typography variant="h3">{recipe.recipe_name}</Typography>
-                    <Typography variant="subtitle1" color="text.secondary">
-                        Chef: {recipe.user.username}
-                    </Typography>
+            <Box component="header" className={styles.header}>
+                <Typography className={styles.recipe_title}>{recipe.recipe_name}</Typography>
+                <Typography className={styles.recipe_title} >
+                    Chef: <Typography className={styles.chef_name}>{recipe.user.username}</Typography>
+                </Typography>
+            </Box>
+
+            <Box className={styles.mainSection}>
+                <Box className={styles.mediaBox}>
+                    <Image
+                        src={recipe.images[0]?.img}
+                        alt="Recipe"
+                        width={0}
+                        height={0}
+                        sizes="100%"
+                        className={styles.recipeImage}
+                    />
                 </Box>
-
-                <Divider />
-
-                <Box className={styles.mainSection}>
-                    <Box className={styles.mediaBox}>
-                        <img
-                            src={recipe.images[0]?.img}
-                            alt="Recipe"
-                        />
-                    </Box>
-                    <Box className={styles.infoBox}>
-                        <Typography variant="h5" gutterBottom>About this dish</Typography>
-                        <Typography variant="body1">{recipe.description}</Typography>
-                    </Box>
+                <Box className={styles.infoBox}>
+                    <Typography variant="body1" className={styles.description}>{recipe.description}</Typography>
                 </Box>
+            </Box>
 
-                <Box component="section">
-                    <Typography variant="h5" sx={{ mb: '2%' }}>Preparation Steps</Typography>
+            <Box component="section">
+                <Typography variant="h5" className={styles.sectionBox}>Preparation Steps</Typography>
+                <Box className={styles.stepsBox}>
                     {recipe.steps.map((step: any, index: number) => (
                         <Box key={step.uuid} className={styles.stepCard}>
                             <Typography className={styles.stepNumber}>{index + 1}.</Typography>

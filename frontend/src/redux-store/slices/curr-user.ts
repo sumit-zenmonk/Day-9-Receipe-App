@@ -17,16 +17,16 @@ export const currentUserSlice = createSlice({
     name: 'curr_user',
     initialState,
     reducers: {
-        currentUser: (state: currentUserSchemaType, action: PayloadAction<currentUserSchemaType>) => {
+        currentUserAction: (state: currentUserSchemaType, action: PayloadAction<currentUserSchemaType>) => {
             state.user_id = action.payload.user_id;
             state.username = action.payload.username;
             state.email = action.payload.email;
             state.access_token = action.payload.access_token;
         },
-        logout: (state) => state = initialState
+        logoutAction: (state) => state = initialState
     }
 })
 
-export const { currentUser, logout } = currentUserSlice.actions
+export const { currentUserAction, logoutAction } = currentUserSlice.actions
 
 export default currentUserSlice.reducer
