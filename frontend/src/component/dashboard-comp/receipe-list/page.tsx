@@ -52,8 +52,6 @@ export default function ReciepeListComp() {
   if (error) return <div>{error}</div>;
 
   return (
-    <div style={{ width: "100%" }}>
-      <RecipeCardList recipes={recipes} />
-    </div>
+    <RecipeCardList recipes={recipes} />
   );
 }

@@ -29,6 +29,7 @@ export class LoginService {
         const token = await this.authService.generateJwtToken(isUserEmailExists[0]);
 
         return {
+            user_id: isUserEmailExists[0].uuid,
             username: isUserEmailExists[0].username,
             email: isUserEmailExists[0].email,
             access_token: token,

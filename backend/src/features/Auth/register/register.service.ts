@@ -28,6 +28,7 @@ export class RegisterService {
         // generate token for accessing resources
         const token = await this.authService.generateJwtToken(RegisteredUser);
         return {
+            user_id: RegisteredUser.uuid,
             username: RegisteredUser.username,
             email: RegisteredUser.email,
             message: "Registered User",

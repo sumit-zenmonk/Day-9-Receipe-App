@@ -53,7 +53,8 @@ export class RecipeRepository extends Repository<RecipeEntity> {
             }, relations: {
                 images: true,
                 steps: true,
-                user: true
+                user: true,
+                favoritedBy: true
             }, select: {
                 recipe_uuid: true,
                 recipe_name: true,
@@ -71,6 +72,8 @@ export class RecipeRepository extends Repository<RecipeEntity> {
                     img: true,
                     uuid: true,
                 },
+                favoritedBy: true,
+                description:true
             }
         });
         return receipes;
@@ -80,14 +83,16 @@ export class RecipeRepository extends Repository<RecipeEntity> {
         const receipes = await this.find({
             where: {
                 favoritedBy: {
-                    user_uuid: user_uuid
+                    user_uuid: user_uuid,
+                    is_active: true,
                 },
                 is_active: true,
                 is_deleted: false,
             }, relations: {
                 images: true,
                 steps: true,
-                user: true
+                user: true,
+                favoritedBy: true
             },
             select: {
                 recipe_uuid: true,
@@ -106,7 +111,8 @@ export class RecipeRepository extends Repository<RecipeEntity> {
                     img: true,
                     uuid: true,
                 },
-                favoritedBy: true
+                favoritedBy: true,
+                description:true
             }
         });
         return receipes;
@@ -128,7 +134,8 @@ export class RecipeRepository extends Repository<RecipeEntity> {
             }, relations: {
                 images: true,
                 steps: true,
-                user: true
+                user: true,
+                favoritedBy: true
             }, select: {
                 recipe_uuid: true,
                 recipe_name: true,
@@ -146,6 +153,8 @@ export class RecipeRepository extends Repository<RecipeEntity> {
                     img: true,
                     uuid: true,
                 },
+                favoritedBy: true,
+                description:true
             }
         });
         return receipes;

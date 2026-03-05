@@ -22,6 +22,7 @@ import { FetchUserFavReceipeModule } from './features/receipe/fav-receipe-list/f
 import { DeleteReceipeModule } from './features/receipe/delete-reciepe/reciepe.delete.module';
 import { FetchAllReceipeModule } from './features/receipe/fetch-all-reciepe/reciepe.fetch.all.module';
 import { SearchReceipeModule } from './features/receipe/search-reciepe/reciepe.search.module';
+import { CreateUserFavReceipeModule } from './features/receipe/create-fav-receipe/fav-receipe-create.module';
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { SearchReceipeModule } from './features/receipe/search-reciepe/reciepe.s
     DeleteReceipeModule,
     FetchAllReceipeModule,
     SearchReceipeModule,
+    CreateUserFavReceipeModule,
   ],
   controllers: [AppController],
   providers: [AppService, AuthService, BcryptService, UserRepository, RecipeRepository, RecipeStepRepository, RecipeImgRepository],

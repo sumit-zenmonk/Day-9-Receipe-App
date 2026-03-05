@@ -8,6 +8,8 @@ type Recipe = {
   recipe_name: string;
   images: { uuid: string; img: string }[];
   steps: { uuid: string; steps_string: string }[];
+  favoritedBy: { user_uuid: string; is_active: boolean }[];
+  description: string;
 };
 
 export default function Home() {
@@ -31,6 +33,7 @@ export default function Home() {
 
         const data = await res.json();
         setRecipes(data.receiepes);
+        console.log(data.receiepes);
       } catch (err: any) {
         setError(err.message);
       } finally {
