@@ -5,6 +5,7 @@ import { Box, Button } from "@mui/material"
 import Cookies from "js-cookie";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { persister } from "@/redux-store";
 
 export default function HeaderComp() {
     const router = useRouter();
@@ -16,10 +17,11 @@ export default function HeaderComp() {
         setIsLoggedIn(!!token);
     });
 
-    const handleAuthAction = () => {
+    const handleAuthAction = async () => {
         try {
             if (isLoggedIn) {
                 Cookies.remove("token");
+                await persister.purge();
                 localStorage.removeItem("persist:root");
                 setIsLoggedIn(false);
                 router.replace('/dashboard');

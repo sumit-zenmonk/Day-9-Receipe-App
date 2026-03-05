@@ -46,7 +46,6 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
     );
 
     const handleDelete = async (recipeUuid: string) => {
-        console.log(access_token);
         if (!access_token) {
             enqueueSnackbar("unauthorised", { variant: "error" });
             return;
@@ -72,7 +71,6 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
     };
 
     const handleFav = async (recipeUuid: string) => {
-        console.log(access_token);
         if (!access_token) {
             enqueueSnackbar("unauthorised", { variant: "error" });
             return;
@@ -89,7 +87,6 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
                 },
                 JSON.stringify({ recipe_uuid: recipeUuid })
             );
-            console.log(response);
             if (response?.user_receiepes) {
                 enqueueSnackbar(
                     `${!previousState ? "Added to" : "Removed from"} favorite recipe`,

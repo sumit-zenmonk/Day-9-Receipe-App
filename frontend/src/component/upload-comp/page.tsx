@@ -12,6 +12,8 @@ import {
 import { useState } from "react";
 import { useAppSelector } from "@/redux-store/hooks";
 import { RootState } from "@/redux-store";
+import { enqueueSnackbar } from "notistack";
+import { ApiCallService } from "@/services/http";
 
 export default function AddRecipeDialog({
     open,
@@ -31,7 +33,14 @@ export default function AddRecipeDialog({
     const [loading, setLoading] = useState(false);
 
     const handleSubmit = async () => {
-        if (!file || !token) return;
+        if (!recipeName || !description || !steps) {
+            enqueueSnackbar("every field required by server", { variant: "error" });
+            return;
+        }
+        if (!file || !token) {
+            enqueueSnackbar("file or token missing", { variant: "error" });
+            return;
+        }
 
         try {
             setLoading(true);
@@ -51,22 +60,25 @@ export default function AddRecipeDialog({
 
             const uploadData = await uploadRes.json();
             const imagePath = uploadData.image_urls[0].path;
-            await fetch(
+            const response = await ApiCallService(
                 `${process.env.NEXT_PUBLIC_BACKEND_URL}/reciepe`,
+                "POST",
                 {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: token,
-                    },
-                    body: JSON.stringify({
-                        recipe_name: recipeName,
-                        description,
-                        steps_string: steps.split(","),
-                        img: imagePath,
-                    }),
-                }
+                    Authorization: token,
+                },
+                JSON.stringify({
+                    recipe_name: recipeName,
+                    description,
+                    steps_string: steps.split(","),
+                    img: imagePath,
+                }),
             );
+            if (response?.message == "Added Success") {
+                enqueueSnackbar("Uploaded Success", { variant: "success" });
+            } else {
+                enqueueSnackbar(response.message || "Upload Failed", { variant: "error" });
+                throw new Error("Failed to upload");
+            }
             onClose();
         } catch (error) {
             console.error(error);
