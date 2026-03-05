@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const publicRoutes = ['/public', '/login', '/signup', '/'];
+const publicRoutes = ['/public', '/login', '/signup', '/', '/reciepe'];
 const AuthBlockRoutes = ['/login', '/signup']
 
 export default function middleware(req: NextRequest) {

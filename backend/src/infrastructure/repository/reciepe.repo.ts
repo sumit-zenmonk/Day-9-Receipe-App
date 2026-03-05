@@ -24,12 +24,46 @@ export class RecipeRepository extends Repository<RecipeEntity> {
         });
     }
 
-    async searchReceiepe(recipe_name: string) {
-        return await this.findOne({
+    async searchReceiepeUsingName(recipe_name: string) {
+        return await this.find({
             where: {
                 recipe_name: Like(`%${recipe_name}%`),
                 is_active: true,
                 is_deleted: false
+            }
+        });
+    }
+
+    async searchReceiepeUsingUUID(recipe_uuid: string) {
+        return await this.findOne({
+            where: {
+                recipe_uuid: recipe_uuid,
+                is_active: true,
+                is_deleted: false,
+            }, relations: {
+                images: true,
+                steps: true,
+                user: true,
+                favoritedBy: true
+            }, select: {
+                recipe_uuid: true,
+                recipe_name: true,
+                user_uuid: true,
+                user: {
+                    uuid: true,
+                    username: true,
+                    email: true
+                },
+                steps: {
+                    steps_string: true,
+                    uuid: true
+                },
+                images: {
+                    img: true,
+                    uuid: true,
+                },
+                favoritedBy: true,
+                description: true
             }
         });
     }
@@ -73,7 +107,7 @@ export class RecipeRepository extends Repository<RecipeEntity> {
                     uuid: true,
                 },
                 favoritedBy: true,
-                description:true
+                description: true
             }
         });
         return receipes;
@@ -112,7 +146,7 @@ export class RecipeRepository extends Repository<RecipeEntity> {
                     uuid: true,
                 },
                 favoritedBy: true,
-                description:true
+                description: true
             }
         });
         return receipes;
@@ -154,7 +188,7 @@ export class RecipeRepository extends Repository<RecipeEntity> {
                     uuid: true,
                 },
                 favoritedBy: true,
-                description:true
+                description: true
             }
         });
         return receipes;

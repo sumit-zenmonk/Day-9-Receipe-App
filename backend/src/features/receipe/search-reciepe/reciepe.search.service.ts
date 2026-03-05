@@ -11,12 +11,22 @@ export class SearchReceipeService {
 
     async SearchReceipeUsingName(receipe_name: string) {
         // check if any active receipe exists
-        const isExists = await this.reciepeRepo.searchReceiepe(receipe_name);
+        const isExists = await this.reciepeRepo.searchReceiepeUsingName(receipe_name);
         if (!isExists) {
             return { message: "Not Found" };
         }
 
-        return { message: "Searchd Success" };
+        return { message: "Searchd Success", data: isExists };
+    }
+
+    async SearchReceipeUsingUUID(receipe_uuid: string) {
+        // check if any active receipe exists
+        const isExists = await this.reciepeRepo.searchReceiepeUsingUUID(receipe_uuid);
+        if (!isExists) {
+            return { message: "Not Found" };
+        }
+
+        return { message: "Searchd Success", data: isExists };
     }
 
 }

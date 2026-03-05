@@ -33,7 +33,6 @@ export default function Home() {
 
         const data = await res.json();
         setRecipes(data.receiepes);
-        console.log(data.receiepes);
       } catch (err: any) {
         setError(err.message);
       } finally {

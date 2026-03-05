@@ -3,10 +3,15 @@ import { SearchReceipeService } from "./reciepe.search.service";
 
 @Controller('search_reciepe')
 export class SearchReceipeController {
-    constructor(private readonly SearchReceipe: SearchReceipeService) { }
+    constructor(private readonly searchReceipe: SearchReceipeService) { }
 
-    @Get(':receipe')
+    @Get(':receipe_name')
     async SearchReceipeUsingName(@Param() params: any) {
-        return await this.SearchReceipe.SearchReceipeUsingName(params.receipe);
+        return await this.searchReceipe.SearchReceipeUsingName(params.receipe_name);
+    }
+
+    @Get('id/:receipe_uuid')
+    async searchByUUID(@Param('receipe_uuid') uuid: string) {
+        return await this.searchReceipe.SearchReceipeUsingUUID(uuid);
     }
 }

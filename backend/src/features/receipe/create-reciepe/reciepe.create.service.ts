@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { RecipeImgRepository } from "src/infrastructure/repository/reciepe.img.repo";
 import { RecipeRepository } from "src/infrastructure/repository/reciepe.repo";
 import { RecipeStepRepository } from "src/infrastructure/repository/reciepe.steps.repo";
@@ -16,7 +16,8 @@ export class CreateReceipeService {
         // check if any active receipe exists
         const isExists = await this.reciepeRepo.findReciepeUsingRecipeName(body.recipe_name);
         if (isExists) {
-            return { message: "Exists With this name earlier" };
+            throw new BadRequestException({ message: "Exists With this name earlier" })
+            // return { message: "Exists With this name earlier" };
         }
 
         // receipe created

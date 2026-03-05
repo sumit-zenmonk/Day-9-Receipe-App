@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Box, Button, Card, CardContent, Typography } from "@mui/material";
 import styles from "./RecipeCardList.module.css";
@@ -8,6 +8,8 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useAppSelector } from "@/redux-store/hooks";
 import { RootState } from "@/redux-store";
+import { useRouter } from "next/navigation";
+import { enqueueSnackbar } from "notistack";
 
 type Recipe = {
     recipe_uuid: string;
@@ -33,6 +35,7 @@ export default function RecipeCardList({ recipes }: Props) {
 }
 
 function RecipeCard({ recipe }: { recipe: Recipe }) {
+    const router = useRouter();
     const { access_token, user_id: loggedInUserUuid } = useAppSelector(
         (state: RootState) => state.currentUserReducer
     );
@@ -57,7 +60,11 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
                 }
             );
 
-            if (!res.ok) throw new Error("Failed to update favorite");
+            if (!res.ok) {
+                enqueueSnackbar(res.statusText, { variant: "error" });
+            } else {
+                enqueueSnackbar(`${previousState ? "added" : "removed"} favorite reciepe`, { variant: `${previousState ? "success" : "error"}` });
+            }
         } catch (error) {
             setIsFav(previousState);
             console.error("Error toggling favorite:", error);
@@ -78,7 +85,7 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
                 )}
             </Box>
 
-            <CardContent className={styles.content}>
+            <CardContent className={styles.content} onClick={() => { router.push(`/reciepe/${recipe.recipe_uuid}`) }}>
                 <Typography variant="h3" className={styles.title}>
                     {recipe.recipe_name}
                 </Typography>
