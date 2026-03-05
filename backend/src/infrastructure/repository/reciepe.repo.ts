@@ -68,10 +68,11 @@ export class RecipeRepository extends Repository<RecipeEntity> {
         });
     }
 
-    async findReciepeUsingUUID(recipe_uuid: string) {
+    async findReciepeUsingUUID(recipe_uuid: string, user_uuid: string) {
         return await this.findOne({
             where: {
                 recipe_uuid: recipe_uuid,
+                user_uuid: user_uuid,
                 is_active: true,
                 is_deleted: false
             }

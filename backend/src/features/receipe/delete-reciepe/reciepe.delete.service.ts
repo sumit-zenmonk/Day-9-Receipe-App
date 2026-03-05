@@ -13,9 +13,9 @@ export class DeleteReceipeService {
 
     async deleteReceipe(receipe_uuid: string, user_uuid: string) {
         // check if any active receipe exists
-        const isExists = await this.reciepeRepo.findReciepeUsingUUID(receipe_uuid);
+        const isExists = await this.reciepeRepo.findReciepeUsingUUID(receipe_uuid, user_uuid);
         if (!isExists) {
-            return { message: "Not Found or Deleted Earlier" };
+            return { message: "not found or you have no access" };
         }
 
         // make in_active receipe
