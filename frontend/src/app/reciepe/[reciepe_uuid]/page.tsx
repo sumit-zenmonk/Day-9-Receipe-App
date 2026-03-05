@@ -3,6 +3,8 @@
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Box, Typography, Divider, CircularProgress } from '@mui/material';
+import { enqueueSnackbar } from "notistack";
+import { ApiCallService } from "@/services/http";
 import styles from './recipe.module.css';
 
 export default function RecipeClientPage() {
@@ -12,11 +14,22 @@ export default function RecipeClientPage() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/search_reciepe/id/${params.reciepe_uuid}`);
-                const result = await response.json();
-                setRecipe(result.data);
-            } catch (e) {
-                console.error(e);
+                const response = await ApiCallService(
+                    `${process.env.NEXT_PUBLIC_BACKEND_URL}/search_reciepe/id/${params.reciepe_uuid}`,
+                    "GET"
+                );
+
+                if (response && response.data) {
+                    enqueueSnackbar("Success", { variant: "success" });
+                    setRecipe(response.data);
+                } else {
+                    const errorMsg = response?.message || "Failed to fetch recipe";
+                    enqueueSnackbar(errorMsg, { variant: "error" });
+                }
+            } catch (error: any) {
+                enqueueSnackbar(error?.message || "Something went wrong", {
+                    variant: "error",
+                });
             }
         };
 

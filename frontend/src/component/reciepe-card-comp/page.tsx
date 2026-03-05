@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { Box, Button, Card, CardContent, Typography } from "@mui/material";
 import styles from "./RecipeCardList.module.css";
@@ -11,6 +11,7 @@ import { useAppSelector } from "@/redux-store/hooks";
 import { RootState } from "@/redux-store";
 import { useRouter } from "next/navigation";
 import { enqueueSnackbar } from "notistack";
+import { ApiCallService } from "@/services/http";
 
 type Recipe = {
     recipe_uuid: string;
@@ -45,54 +46,64 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
     );
 
     const handleDelete = async (recipeUuid: string) => {
+        console.log(access_token);
+        if (!access_token) {
+            enqueueSnackbar("unauthorised", { variant: "error" });
+            return;
+        }
+
         try {
-            const res = await fetch(
+            const response = await ApiCallService(
                 `${process.env.NEXT_PUBLIC_BACKEND_URL}/reciepe/${recipeUuid}`,
-                {
-                    method: "DELETE",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: access_token,
-                    },
-                    body: JSON.stringify({ recipe_uuid: recipeUuid }),
-                }
+                "DELETE",
+                { Authorization: access_token },
+                JSON.stringify({ recipe_uuid: recipeUuid })
             );
 
-            if (!res.ok) {
-                enqueueSnackbar(res.statusText, { variant: "error" });
+            if (response?.message == "Deleted Success") {
+                enqueueSnackbar(response.message, { variant: "success" });
             } else {
-                enqueueSnackbar(`Deleted Success`, { variant: "success" });
+                enqueueSnackbar(response.message || "Delete Event Failed", { variant: "error" });
             }
-        } catch (error) {
-            console.error("Error while deletion:", error);
+        } catch (error: any) {
+            console.log("catch", error);
+            enqueueSnackbar(error?.message || "Delete failed", { variant: "error" });
         }
     };
 
     const handleFav = async (recipeUuid: string) => {
+        console.log(access_token);
+        if (!access_token) {
+            enqueueSnackbar("unauthorised", { variant: "error" });
+            return;
+        }
         const previousState = isFav;
         setIsFav(!previousState);
 
         try {
-            const res = await fetch(
+            const response = await ApiCallService(
                 `${process.env.NEXT_PUBLIC_BACKEND_URL}/fav_reciepe`,
+                "POST",
                 {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: access_token,
-                    },
-                    body: JSON.stringify({ recipe_uuid: recipeUuid }),
-                }
+                    Authorization: access_token,
+                },
+                JSON.stringify({ recipe_uuid: recipeUuid })
             );
-
-            if (!res.ok) {
-                enqueueSnackbar(res.statusText, { variant: "error" });
+            console.log(response);
+            if (response?.user_receiepes) {
+                enqueueSnackbar(
+                    `${!previousState ? "Added to" : "Removed from"} favorite recipe`,
+                    { variant: !previousState ? "success" : "info" }
+                );
             } else {
-                enqueueSnackbar(`${!previousState ? "added" : "removed"} favorite reciepe`, { variant: `${!previousState ? "success" : "error"}` });
+                enqueueSnackbar(response.message || "Favorite Add Event Failed", { variant: "error" });
+                throw new Error("Failed to update favorite");
             }
-        } catch (error) {
+        } catch (error: any) {
             setIsFav(previousState);
-            console.error("Error toggling favorite:", error);
+            enqueueSnackbar(error?.message || "Favorite update failed", {
+                variant: "error",
+            });
         }
     };
 

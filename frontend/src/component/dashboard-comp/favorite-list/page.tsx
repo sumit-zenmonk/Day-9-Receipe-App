@@ -5,6 +5,8 @@ import { RootState } from "@/redux-store";
 import { useAppSelector } from "@/redux-store/hooks";
 import RecipeCardList from "@/component/reciepe-card-comp/page";
 import { Box } from "@mui/material";
+import { ApiCallService } from "@/services/http";
+import { enqueueSnackbar } from "notistack";
 
 export default function FavRecipeListComp() {
   const token = useAppSelector(
@@ -22,22 +24,23 @@ export default function FavRecipeListComp() {
       try {
         setLoading(true);
         setError(null);
-        const res = await fetch(
+
+        const res = await ApiCallService(
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/fav_reciepe`,
+          'GET',
           {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: token,
-            },
-            body: undefined,
-          }
+            Authorization: token,
+          },
+          undefined
         );
-        if (!res.ok) {
-          throw new Error("Failed to fetch favorite recipes");
+
+        if (!res.user_receiepes) {
+          enqueueSnackbar("Failed to fetch Favorite recipes", { variant: "error" })
+        } else {
+          setRecipes(res.user_receiepes);
+          enqueueSnackbar("fetch Favorite recipes success", { variant: "success" })
         }
-        const data = await res.json();
-        setRecipes(data.user_receiepes);
+
       } catch (err: any) {
         setError(err.message);
       } finally {

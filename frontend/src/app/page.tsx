@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import RecipeCardList from "@/component/reciepe-card-comp/page";
+import { ApiCallService } from "@/services/http";
+import { enqueueSnackbar } from "notistack";
 
 type Recipe = {
   recipe_uuid: string;
@@ -20,21 +22,19 @@ export default function Home() {
   useEffect(() => {
     const fetchAllRecipes = async () => {
       try {
-        const res = await fetch(
+        const response = await ApiCallService(
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/all_reciepe`,
-          {
-            method: "GET",
-          }
+          "GET"
         );
 
-        if (!res.ok) {
-          throw new Error("Failed to fetch recipes");
+        if (response && response.receiepes) {
+          setRecipes(response.receiepes);
+        } else {
+          const errorMsg = response?.message || "Failed to fetch recipes";
+          enqueueSnackbar(errorMsg, { variant: "error" });
         }
-
-        const data = await res.json();
-        setRecipes(data.receiepes);
       } catch (err: any) {
-        setError(err.message);
+        enqueueSnackbar(err?.message || "Something went wrong", { variant: "error" });
       } finally {
         setLoading(false);
       }

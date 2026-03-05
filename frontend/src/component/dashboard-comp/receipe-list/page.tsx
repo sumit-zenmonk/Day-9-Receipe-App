@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { RootState } from "@/redux-store";
 import { useAppSelector } from "@/redux-store/hooks";
 import RecipeCardList from "@/component/reciepe-card-comp/page";
+import { ApiCallService } from "@/services/http";
+import { enqueueSnackbar } from "notistack";
 
 export default function ReciepeListComp() {
   const token = useAppSelector(
@@ -20,24 +22,21 @@ export default function ReciepeListComp() {
         setLoading(true);
         setError(null);
 
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/reciepe`,
+        const res = await ApiCallService(`
+          ${process.env.NEXT_PUBLIC_BACKEND_URL}/reciepe`,
+          'GET',
           {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: token,
-            },
-          }
+            Authorization: token,
+          },
+          undefined
         );
 
-        if (!res.ok) {
-          throw new Error("Failed to fetch recipes");
+        if (!res.user_receiepes) {
+          enqueueSnackbar("Failed to fetch recipes", { variant: "error" })
+        } else {
+          setRecipes(res.user_receiepes);
+          enqueueSnackbar("fetch recipes success", { variant: "success" })
         }
-
-        const data = await res.json();
-        setRecipes(data.user_receiepes);
-
       } catch (err: any) {
         setError(err.message);
       } finally {
