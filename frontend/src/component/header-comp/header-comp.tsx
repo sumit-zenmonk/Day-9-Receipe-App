@@ -1,11 +1,9 @@
 "use client"
-import Image from "next/image"
 import './header-comp.css'
 import { Box, Button } from "@mui/material"
 import Cookies from "js-cookie";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { persister } from "@/redux-store";
 import { useAppDispatch } from "@/redux-store/hooks";
 import { logoutAction } from "@/redux-store/slices/curr-user";
 
@@ -24,9 +22,7 @@ export default function HeaderComp() {
         try {
             if (isLoggedIn) {
                 Cookies.remove("token");
-                await persister.purge();
                 dispatch(logoutAction());
-                localStorage.removeItem("persist:root");
                 setIsLoggedIn(false);
                 router.replace('/dashboard');
             } else {

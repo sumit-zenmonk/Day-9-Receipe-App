@@ -48,7 +48,7 @@ export default function RecipeClientPage() {
             <Box component="header" className={styles.header}>
                 <Typography className={styles.recipe_title}>{recipe.recipe_name}</Typography>
                 <Typography className={styles.recipe_title} >
-                    Chef: <Typography className={styles.chef_name}>{recipe.user.username}</Typography>
+                    Chef: <b className={styles.chef_name}>{recipe.user.username}</b>
                 </Typography>
             </Box>
 

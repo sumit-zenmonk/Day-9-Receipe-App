@@ -47,7 +47,7 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
 
     const handleDelete = async (recipeUuid: string) => {
         if (!access_token) {
-            enqueueSnackbar("unauthorised", { variant: "error" });
+            router.push(`/login`)
             return;
         }
 
@@ -72,7 +72,7 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
 
     const handleFav = async (recipeUuid: string) => {
         if (!access_token) {
-            enqueueSnackbar("unauthorised", { variant: "error" });
+            router.push(`/login`)
             return;
         }
         const previousState = isFav;
